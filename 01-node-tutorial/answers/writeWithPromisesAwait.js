@@ -35,4 +35,4 @@ const readWrite = async (filePath, text) => {
 readWrite("./temporary/fileA.txt", `\nFirst Line \nSecond Line \nThird Line`);
 
 // Add the filename to the .gitignore file.
-require("fs").appendFileSync(".gitignore", "\ntemp.txt\n");
+// require("fs").appendFileSync(".gitignore", "\ntemp.txt\n");

@@ -64,7 +64,7 @@ const server = http.createServer((req, res) => {
         item = "Nothing was entered.";
       }
       // Your code changes would end here
-      
+
       res.writeHead(303, {
         Location: "/",
       });
@@ -75,5 +75,8 @@ const server = http.createServer((req, res) => {
   }
 });
 
+server.on("request", (req) => {
+  console.log("event received: ", req.method, req.url);
+});
 server.listen(3000);
 console.log("The server is listening on port 3000.");
