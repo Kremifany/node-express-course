@@ -34,7 +34,7 @@ const form = () => {
   <input name="item"></input>
   <button type="submit">Submit</button>
   <p>${userGuess ? userGuess : ""}</p>
-  
+
   </form>
   </body>
   `;
@@ -49,21 +49,22 @@ const server = http.createServer((req, res) => {
       // here, you can add your own logic
       if (body["item"]) {
         item = body["item"];
+        // Get the user's guess.
+        userGuess = parseInt(body["item"]);
+
+        // Check if the user guessed correctly.
+        if (userGuess === randomNumber) {
+          item = "Congratulations! You guessed correctly!";
+        } else if (userGuess < randomNumber) {
+          item = "Your guess is too low.";
+        } else if (userGuess > randomNumber) {
+          item = "Your guess is too high.";
+        }
       } else {
         item = "Nothing was entered.";
       }
       // Your code changes would end here
-      // Get the user's guess.
-      userGuess = parseInt(body["item"]);
 
-      // Check if the user guessed correctly.
-      if (userGuess === randomNumber) {
-        item = "Congratulations! You guessed correctly!";
-      } else if (userGuess < randomNumber) {
-        item = "Your guess is too low.";
-      } else if (userGuess > randomNumber) {
-        item = "Your guess is too high.";
-      }
       res.writeHead(303, {
         Location: "/",
       });
@@ -74,5 +75,8 @@ const server = http.createServer((req, res) => {
   }
 });
 
+server.on("request", (req) => {
+  console.log("event received: ", req.method, req.url);
+});
 server.listen(3000);
 console.log("The server is listening on port 3000.");
