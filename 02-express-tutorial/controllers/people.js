@@ -28,9 +28,12 @@ const addPerson = (req, res) => {
       .json({ success: false, message: "Please provide a name" });
   }
 
-  newId = getMaxId() + 1;
-  people.push({ id: newId, name: req.body.name });
-  res.status(201).json({ success: true, name: name, id: newId });
+  // newId = getMaxId() + 1;
+  // people.push({ id: newId, name: req.body.name });
+  // res.status(201).json({ success: true, name: name, id: newId });
+  const newId = people.length + 1;
+  people.push({ id: newId, name });
+  res.status(201).json({ success: true, name, id: newId });
 };
 
 updatePerson = (req, res) => {
