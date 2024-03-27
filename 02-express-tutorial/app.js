@@ -15,6 +15,7 @@ app.get("/api/v1/test", (req, res) => {
 app.get("/api/v1/products", (req, res) => {
   res.json({ products });
 });
+
 app.get("/api/v1/products/:productID", (req, res) => {
   //res.json(req.params);
   const idToFind = parseInt(req.params.productID);
@@ -25,29 +26,58 @@ app.get("/api/v1/products/:productID", (req, res) => {
   res.json(product);
 });
 
-app.get("/api/v1/query", (req, res) => {
-  console.log(req.query);
-  const { search, limit, price } = req.query;
-  let sortedProducts = [...products];
+// app.get("/api/v1/query", (req, res) => {
+//   console.log(req.query);
+//   const { search, limit, price } = req.query;
+//   let sortedProducts = [...products];
 
-  if (search) {
-    sortedProducts = sortedProducts.filter((product) => {
-      return product.name.startsWith(search);
-    });
-  }
-  
-  if (price) {
-    sortedProducts = sortedProducts.filter((product) => {
-      return (Number(product.price)) < price;
-    });
-  }
-  if (limit) {
-    sortedProducts = sortedProducts.slice(0, Number(limit));
-  }
-  if (sortedProducts.length < 1) {
-    res.status(200).send("no product matches");
-  }
-  return res.status(200).send(sortedProducts);
+//   if (search) {
+//     sortedProducts = sortedProducts.filter((product) => {
+//       return product.name.startsWith(search);
+//     });
+//   }
+
+//   if (price) {
+//     sortedProducts = sortedProducts.filter((product) => {
+//       return (Number(product.price)) < price;
+//     });
+//   }
+//   if (limit) {
+//     sortedProducts = sortedProducts.slice(0, Number(limit));
+//   }
+//   if (sortedProducts.length < 1) {
+//     res.status(200).send("no product matches");
+//   }
+//   return res.status(200).send(sortedProducts);
+// });
+
+app.get("/api/v1/query", (req, res) => {
+  const { search, limit = 0, maxPrice = 0 } = req.query;
+
+  const maxLimit = parseInt(limit, 10);
+
+  // use Array.reduce to build a list of filtered products
+  const filteredProducts = products.reduce((acc, product) => {
+    // if the product price is greater than maxPrice OR
+    // if there's a search and the product name doesn't include the search term OR
+    // if there’s a limit and the accumulator (acc === list of filtered products) hit the limit
+    // then return the accumulator (acc === list of filtered products)
+    if (
+      product.price > parseFloat(maxPrice) ||
+      (search && !product.name.startsWith(search)) ||
+      (maxLimit && acc.length === maxLimit)
+    ) {
+      return acc;
+    }
+
+    // add product to accumulator list
+    acc.push(product);
+
+    // return the accumulator to check the next product
+    return acc;
+  }, []);
+
+  res.status(200).json(filteredProducts);
 });
 
 app.get("/api/v1/products/not-there", (req, res) => {
