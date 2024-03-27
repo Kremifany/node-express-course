@@ -1,4 +1,4 @@
-let { people } = require("../data");
+const { people } = require("../data");
 
 const getPeople = (req, res) => {
   console.log("Inside getAllPeople");

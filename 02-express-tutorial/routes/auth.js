@@ -3,6 +3,6 @@ const router = express.Router();
 const { logon, logoff } = require("../controllers/auth");
 
 router.route("/logon").post(logon);
-router.route("/logoff").delete(logoff);
+router.route("/logoff").post(logoff);
 
 module.exports = router;
