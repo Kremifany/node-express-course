@@ -8,11 +8,14 @@ const getProduct = (req, res) => {
   const idToFind = parseInt(req.params.productID);
   const product = products.find((p) => p.id === idToFind);
 
-  if (!product) {
-    res.status(404).json({ message: "No such a product!" });
-  } else {
-    res.status(200).json(product);
-  }
+  // if (!product) {
+  //   res.status(404).json({ message: "No such a product!" });
+  // } else {
+  //   res.status(200).json(product);
+  // }
+  return product
+    ? res.status(200).json(product)
+    : res.status(404).json({ message: "No such a product!" });
 };
 
 const searchProduct = (req, res) => {
