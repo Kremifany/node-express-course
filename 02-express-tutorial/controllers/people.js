@@ -38,20 +38,36 @@ const addPerson = (req, res) => {
 
 updatePerson = (req, res) => {
   console.log("inside updatePerson controller")
-  const person = people.find((person) => person.id === Number(req.params.id));
+  // const person = people.find((person) => person.id === Number(req.params.id));
+  // if (!person) {
+  //   return res.status(404).json({
+  //     success: false,
+  //     message: `There are no person with the id:${req.params.id}`,
+  //   });
+  // }
+  // const newPerson = people.map((person) => {
+  //   if (person.id === Number(req.params.id)) {
+  //     person.name = req.body.name;
+  //   }
+  //   return person;
+  // });
+  // res.status(200).json({ success: true, data: newPerson });
+  const personId = parseInt(req.params.id, 10);
+
+  const person = people.find((person) => person.id === personId);
+
   if (!person) {
-    return res.status(404).json({
-      success: false,
-      message: `There are no person with the id:${req.params.id}`,
-    });
+    return res
+      .status(404)
+      .json({
+        success: false,
+        msg: `There is no person with the id: ${personId}`,
+      });
   }
-  const newPerson = people.map((person) => {
-    if (person.id === Number(req.params.id)) {
-      person.name = req.body.name;
-    }
-    return person;
-  });
-  res.status(200).json({ success: true, data: newPerson });
+
+  person.name = req.body.name;
+
+  res.status(200).json({ success: true, data: person });
 };
 
 deletePerson = (req, res) => {
