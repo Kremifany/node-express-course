@@ -71,17 +71,28 @@ updatePerson = (req, res) => {
 };
 
 deletePerson = (req, res) => {
-  const person = people.find((person) => person.id === Number(req.params.id));
-  if (!person) {
-    return res.status(404).json({
-      success: false,
-      message: `no person with id ${req.params.id}`,
-    });
+  // const person = people.find((person) => person.id === Number(req.params.id));
+  // if (!person) {
+  //   return res.status(404).json({
+  //     success: false,
+  //     message: `no person with id ${req.params.id}`,
+  //   });
+  // }
+  // const newPerson = people.filter(
+  //   (person) => person.id !== Number(req.params.id)
+  // );
+  // return res.status(200).json({ success: true, data: newPerson });
+  const personId = parseInt(req.params.id, 10);
+
+  const personIndex = people.findIndex((p) => p.id === personId);
+
+  if (personIndex < 0) {
+    return res.status(404).json({ message: "Person not found" });
   }
-  const newPerson = people.filter(
-    (person) => person.id !== Number(req.params.id)
-  );
-  return res.status(200).json({ success: true, data: newPerson });
+
+  people.splice(personIndex, 1);
+
+  return res.status(200).json({ success: true, data: people });
 };
 
 module.exports = {
