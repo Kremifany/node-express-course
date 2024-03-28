@@ -15,10 +15,6 @@ const getPerson = (req, res) => {
   return res.status(200).json(person);
 };
 
-const getMaxId = () => {
-  return people.reduce((ret, cur) => (ret < cur.id ? cur.id : ret), 0);
-};
-
 const addPerson = (req, res) => {
   console.log(req.body);
   const { name } = req.body;

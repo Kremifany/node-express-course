@@ -1,4 +1,4 @@
-let { products } = require("../data");
+const { products } = require("../data");
 
 const getProducts = (req, res) => {
   res.status(200).json({ success: true, data: products });
