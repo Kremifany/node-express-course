@@ -1,0 +1,10 @@
+1.We created the middleware asyncWrapper for error handling functionality that we repeating in each controller function : try catch block.
+
+2.const getTask = asyncWrapper(async (req, res, next) => {
+  const { id: taskID } = req.params;
+  const task = await Task.findOne({ _id: taskID });
+  if (!task) {
+    throw new CustomAPIError(404, 'Task not found');
+  }
+  res.status(200).json({ task });
+});
