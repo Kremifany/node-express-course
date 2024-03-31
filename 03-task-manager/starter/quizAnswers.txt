@@ -1,0 +1,8 @@
+1.Middleware in Express. js is a function that is accessible to the request, response objects and the next middleware function.
+It can execute any code, terminate the request-response cycle, make needed changes in req and res objects, and detect errors.
+2.CRUD operations stand for: Create, Read, Update, Delete/Destroy
+3.
+    i.The dotenv.config() function from the dotenv npm package will read the .env file, assign the variables to process.env,
+      and return an object (named parsed) containing the content. it will also throw an error if it failed.
+    ii.To protect the contents of the .env file you create a .gitignorefile and add .env to it,
+        The .gitignore file tells source control to ignore the files you list.
