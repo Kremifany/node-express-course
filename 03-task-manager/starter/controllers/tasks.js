@@ -27,6 +27,9 @@ const getTask = asyncWrapper(async (req, res, done) => {
 
 const deleteTask = asyncWrapper(async (req, res, next) => {
   const { id: taskID } = req.params;
+  if (!mongoose.isValidObjectId(taskID)) {
+    return done(createCustomError(`Invalid task id`, 400));
+  }
   const task = await Task.findOneAndDelete({ _id: taskID });
   if (!task) {
     return next(createCustomError(`No task with Id : ${taskID}`, 404));
@@ -36,6 +39,9 @@ const deleteTask = asyncWrapper(async (req, res, next) => {
 
 const updateTask = asyncWrapper(async (req, res) => {
   const { id: taskID } = req.params;
+  if (!mongoose.isValidObjectId(taskID)) {
+    return done(createCustomError(`Invalid task id`, 400));
+  }
   const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
     new: true,
     runValidators: true,

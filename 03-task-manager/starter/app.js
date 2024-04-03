@@ -1,14 +1,16 @@
 require("dotenv").config();
-const express = require("express");
-const app = express();
+const errorHandlerMiddleware = require("./middleware/error-handler");
 const tasks = require("./routes/tasks");
 const connectDB = require("./db/connect");
-
 const notFound = require("./middleware/not-found");
+const express = require("express");
+
+const app = express();
+
 //middleware
 app.use(express.static("./public"));
 app.use(express.json());
-const errorHandlerMiddleware = require("./middleware/error-handler");
+
 //routes
 
 app.use("/api/v1/tasks", tasks);
