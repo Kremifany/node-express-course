@@ -67,11 +67,3 @@ module.exports = {
   deleteTask,
   editTask,
 };
-module.exports = {
-  getAllTasks,
-  createTask,
-  getTask,
-  updateTask,
-  deleteTask,
-  editTask,
-};
