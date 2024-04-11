@@ -2,7 +2,7 @@ const Product = require("../models/product");
 
 const getAllProductsStatic = async (req, res) => {
   const search = "a";
-  const products = await Product.find({}).sort("name price");
+  const products = await Product.find({}).select("name price");
   // throw new Error("Throw async errors");
   res.status(200).json({ products, nbHits: products.length });
 };
