@@ -2,7 +2,11 @@ const Product = require("../models/product");
 
 const getAllProductsStatic = async (req, res) => {
   const search = "a";
-  const products = await Product.find({}).select("name price");
+  const products = await Product.find({})
+    .sort("name")
+    .select("name price")
+    .limit(10)
+    .skip(1);
   // throw new Error("Throw async errors");
   res.status(200).json({ products, nbHits: products.length });
 };
@@ -38,7 +42,7 @@ const getAllProducts = async (req, res) => {
     console.log("select");
     const fieldstList = fields.split(",").join(" ");
     result = result.select(fieldstList);
-  } 
+  }
   const products = await result;
   res.status(200).json({ products, nbHits: products.length });
 };
