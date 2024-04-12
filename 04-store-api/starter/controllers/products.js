@@ -1,19 +1,21 @@
 const Product = require("../models/product");
+//////////////////////////////////////////////////////////////////STATIC/////////////////////////////////////////////////////////////////////////////
 
 const getAllProductsStatic = async (req, res) => {
   const search = "a";
-  const products = await Product.find({})
+  const products = await Product.find({ price: { $gt: 100 } })
     .sort("name")
     .select("name price")
     .limit(10)
-    .skip(1);
+    .skip(1).numericFilters;
   // throw new Error("Throw async errors");
   res.status(200).json({ products, nbHits: products.length });
 };
 
+//////////////////////////////////////////////////////////////////
 const getAllProducts = async (req, res) => {
   console.log(req.query);
-  const { featured, company, name, sort, fields } = req.query;
+  const { featured, company, name, sort, fields, numericFilters } = req.query;
   const queryObject = {};
   if (featured) {
     queryObject.featured = featured === "true" ? "true" : "false";
@@ -24,6 +26,28 @@ const getAllProducts = async (req, res) => {
   if (name) {
     queryObject.name = { $regex: name, $options: "i" };
   }
+  if (numericFilters) {
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "<": "$lt",
+      "<=": "$lte",
+      "=": "$eq",
+    };
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+    let filters = numericFilters.replace(
+      regEx,
+      (match) => `-${operatorMap[match]}-`
+    );
+    const options = ["price", "rating"];
+    filters = filters.split(",").forEach((element) => {
+      const [field, operator, value] = element.split("-");
+      if (options.includes(field)) {
+        queryObject[field] = { [operator]: Number(value) }
+      }
+    });
+  }
+
   console.log("queryObject:");
   console.log(queryObject);
   let result = Product.find(queryObject);
@@ -50,8 +74,6 @@ const getAllProducts = async (req, res) => {
   const limit = Number(req.query.limit) || 10;
 
   const skip = (page - 1) * limit;
-
-  const fieldstList = fields.split(",").join(" ");
   result = result.skip(skip).limit(limit);
 
   const products = await result;
