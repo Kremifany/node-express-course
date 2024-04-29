@@ -6,6 +6,7 @@ const resultDOM = document.querySelector('.result')
 const btnDOM = document.querySelector('#data')
 const tokenDOM = document.querySelector('.token')
 
+if (formDOM && btnDOM) {
 formDOM.addEventListener('submit', async (e) => {
   formAlertDOM.classList.remove('text-success')
   tokenDOM.classList.remove('text-success')
@@ -57,7 +58,11 @@ btnDOM.addEventListener('click', async () => {
     resultDOM.innerHTML = `<p>${error.response.data.msg}</p>`
   }
 })
-
+}else{
+  console.warn(
+    "DOM elements formDOM or btnDOM not found. Event listeners not attached."
+  );
+}
 const checkToken = () => {
   tokenDOM.classList.remove('text-success')
 
