@@ -13,7 +13,7 @@ const logon = async (req, res) => {
 
   console.log(`logon getting jwt sign ${process.env.JWT_SECRET}`);
   const token = jwt.sign({ name }, process.env.JWT_SECRET, {
-    expiresIn: "24h",
+    expiresIn: "15s",
   });
   console.log(`logon getting jwt sign done`);
 
